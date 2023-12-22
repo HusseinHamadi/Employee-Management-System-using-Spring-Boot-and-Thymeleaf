@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,15 +21,7 @@ import java.util.List;
 public class Project {
 
     @Id
-    @SequenceGenerator(
-            name = "project_sequence",
-            sequenceName = "project_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "project_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
@@ -65,22 +58,7 @@ public class Project {
     private Department department;
 
 
-
-    @ManyToMany(
-            cascade = CascadeType.ALL
-    )
-    @JoinTable(
-            name = "employee_project_map",
-            joinColumns = @JoinColumn(
-                    name = "project_id",
-                    referencedColumnName = "id"
-            ),
-
-            inverseJoinColumns = @JoinColumn(
-                    name = "employee_id",
-                    referencedColumnName = "employee_id"
-            )
-    )
-    private List<Employee> employees;
+    @ManyToMany(mappedBy = "projects")
+    private List<Employee>  employees = new ArrayList<>();
 
 }

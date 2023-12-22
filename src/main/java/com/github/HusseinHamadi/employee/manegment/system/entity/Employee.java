@@ -11,7 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,15 +27,7 @@ public class Employee {
 
     @Id
     @Column(name = "employee_id")
-    @SequenceGenerator(
-            name = "employee_sequence",
-            sequenceName = "employee_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "employee_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
 
 
@@ -57,7 +51,7 @@ public class Employee {
 
 
     @UpdateTimestamp
-    @Column(name = "update_date",nullable = false)
+    @Column(name = "update_date")
     private Date updateDate;
 
 
@@ -95,8 +89,10 @@ public class Employee {
     )
     @JoinColumn(
             name = "department_id",
-            referencedColumnName = "id"
+            referencedColumnName = "id",
+            nullable = false
     )
+    @NotNull
     private Department department;
 
 
@@ -105,4 +101,23 @@ public class Employee {
     public Department getDepartment() {
         return department;
     }
+
+
+    @ManyToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinTable(
+            name = "employee_project_map",
+            joinColumns = @JoinColumn(
+                    name = "employee_id",
+                    referencedColumnName = "employee_id"
+            ),
+
+            inverseJoinColumns = @JoinColumn(
+                    name = "project_id",
+                    referencedColumnName = "id"
+            )
+    )
+    private List<Project> projects;
+
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Department Details</title>
+  <link th:href = "@{/css/department.css}" rel="stylesheet">
+  <script type="text/javascript" th:src = "@{/js/department.js}"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+
+<table th:if="${employee != null}" class="table table-striped table-bordered">
+  <thead class="table-dark">
+  <tr>
+    <th>Id</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Started On</th>
+    <th>Address</th>
+    <th>Phone Number</th>
+    <th>Salary</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="emp : ${employee}">
+    <td th:text="${emp.employeeId}"></td>
+    <td th:text="${emp.firstName}"></td>
+    <td th:text="${emp.lastName}"></td>
+    <td th:text="${emp.startingDate}"></td>
+    <td th:text="${emp.address}"></td>
+    <td th:text="${emp.phoneNumber}"></td>
+    <td th:text="${emp.salary}"></td>
+  </tr>
+  </tbody>
+
+</table>
+
+<div th:if="${employees != null}" class="container">
+  <div class="row">
+    <h1>List Employees</h1>
+  </div>
+
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+    <tr>
+      <th>Id</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Started On</th>
+      <th>Address</th>
+      <th>Phone Number</th>
+      <th>Salary</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="emp : ${employees}">
+      <td th:text="${emp.employeeId}"></td>
+      <td th:text="${emp.firstName}"></td>
+      <td th:text="${emp.lastName}"></td>
+      <td th:text="${emp.startingDate}"></td>
+      <td th:text="${emp.address}"></td>
+      <td th:text="${emp.phoneNumber}"></td>
+      <td th:text="${emp.salary}"></td>
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+
+
+<div th:if="${employeeSalaries != null}" class="container">
+  <div class="row">
+    <h1>List Employees</h1>
+  </div>
+  <h2>Employees that has salaries between <span th:text="${upperBound}"></span> and <span th:text="${lowerBound}"></span></h2>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+    <tr>
+      <th>Id</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Started On</th>
+      <th>Address</th>
+      <th>Phone Number</th>
+      <th>Salary</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="emp : ${employeeSalaries}">
+      <td th:text="${emp.employeeId}"></td>
+      <td th:text="${emp.firstName}"></td>
+      <td th:text="${emp.lastName}"></td>
+      <td th:text="${emp.startingDate}"></td>
+      <td th:text="${emp.address}"></td>
+      <td th:text="${emp.phoneNumber}"></td>
+      <td th:text="${emp.salary}"></td>
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+
+</body>
+</html>

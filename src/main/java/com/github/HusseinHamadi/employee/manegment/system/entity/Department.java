@@ -27,15 +27,7 @@ import java.util.List;
 public class Department {
 
     @Id
-    @SequenceGenerator(
-            name = "department_sequence",
-            sequenceName = "department_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "department_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -65,11 +57,14 @@ public class Department {
 
 
     @UpdateTimestamp
-    @Column(name = "update_date",nullable = false)
+    @Column(name = "update_date")
     private Date updateDate;
 
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(
+            mappedBy = "department",
+            cascade = CascadeType.PERSIST
+    )
     private List<Employee> employees; // One department can have many employees
 
 

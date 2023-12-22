@@ -1,6 +1,5 @@
 package com.github.HusseinHamadi.employee.manegment.system.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.HusseinHamadi.employee.manegment.system.entity.Employee;
 import com.github.HusseinHamadi.employee.manegment.system.error.EmployeeNotFoundException;
 import com.github.HusseinHamadi.employee.manegment.system.repository.DepartmentRepository;
@@ -28,11 +27,8 @@ public class EmployeeServiceImp implements EmployeeService{
     }
 
     @Override
-    public Employee saveEmployee(Employee employee, Long depId) {
-        if(depId!=null){
-            if(departmentRepository.findById(depId).isPresent())
-                employee.setDepartment(departmentRepository.findById(depId).get());
-        }
+    public Employee saveEmployee(Employee employee) {
+
         return employeeRepository.save(employee);
     }
 
@@ -79,5 +75,16 @@ public class EmployeeServiceImp implements EmployeeService{
             throw new EmployeeNotFoundException("Employee Not Present");
         }
         return employee.get();
+    }
+
+
+    @Override
+    public List<Employee> getEmployeeByDepartmentId(Long id) {
+        return employeeRepository.findByDepartmentId(id);
+    }
+
+    @Override
+    public List<Employee> getEmployeeBySalary(Double up, Double low) {
+        return employeeRepository.findBySalaryBetween(up,low);
     }
 }
