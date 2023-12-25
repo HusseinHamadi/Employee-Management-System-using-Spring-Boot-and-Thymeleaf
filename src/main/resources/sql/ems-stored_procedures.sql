@@ -77,13 +77,21 @@ DELIMITER ;
 delimiter //
 create procedure employeeCount(IN departmentId int, out empCount int)
 begin
-	select empCount = count(e.id)
+	select count(e.employee_id) into empCount
     from employee e
     where e.department_id=departmentId;
 end //
 delimiter ;
 
-
+-- get employees by salary between
+delimiter //
+create procedure getBySalaryBetween(IN up double, IN low double)
+begin
+	select *
+    from employee e
+    where e.salary between up and low;
+end //
+delimiter ;
 
 
 

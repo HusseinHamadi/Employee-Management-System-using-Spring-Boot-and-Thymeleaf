@@ -98,7 +98,7 @@ public class EmployeeController {
         List<Department> departments = departmentService.listOfDepartments();
         model.addAttribute("departments", departments);
         model.addAttribute("employee", employee);
-        return "updateEmployee";
+        return "/updateEmployee";
     }
     @PostMapping("/updateEmployee/{id}")
     public String updateEmployee(@PathVariable("id") Long id, @ModelAttribute("employee") Employee employee) throws EmployeeNotFoundException{

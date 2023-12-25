@@ -5,6 +5,7 @@ import com.github.HusseinHamadi.employee.manegment.system.entity.Employee;
 import com.github.HusseinHamadi.employee.manegment.system.error.DepartmentNotFoundException;
 import com.github.HusseinHamadi.employee.manegment.system.error.EmployeeNotFoundException;
 import com.github.HusseinHamadi.employee.manegment.system.service.DepartmentService;
+import com.github.HusseinHamadi.employee.manegment.system.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,17 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
+@RequestMapping("/company/departments")
 public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
 
-    @GetMapping("/company/departments")
+    @Autowired
+    private EmployeeService employeeService;
+
+
+    @GetMapping
     public String getDepartments(Model model){
 
         List<Department> departments=departmentService.listOfDepartments();
@@ -31,34 +37,40 @@ public class DepartmentController {
         return "department";
     }
 
-    @GetMapping("/company/departments/{id}")
-    public String department(@PathVariable Long id, Model model) throws DepartmentNotFoundException {
+    @GetMapping("/getDepartmentById")
+    public String department(@RequestParam("id") Long id, Model model) throws DepartmentNotFoundException {
         Department department = departmentService.getDepartmentById(id);
         model.addAttribute("department", department);
-        return "department";
+        return "departmentSearchResult";
     }
 
 
-    @GetMapping("/company/departments/new")
+    @GetMapping("/new")
     public String showDepartmentForm(Model model) {
         model.addAttribute("department", new Department());
-        model.addAttribute("employee", true);
+        model.addAttribute("manager", new Employee());
         return "department-form";
     }
 
-    @PostMapping("/company/departments")
-    public String createDepartment(@ModelAttribute Department department) {
+    @PostMapping("/create")
+    public String createDepartmentWithOrWithoutManager(@ModelAttribute Department department, @ModelAttribute Employee manager) {
+            // Save the manager if manager's name is provided
+            employeeService.saveEmployee(manager);
+            manager.setDepartment(department);
+            department.setManager(manager);
+
         departmentService.createDepartment(department);
+
         return "redirect:/company/departments";
     }
 
-    @PutMapping("/company/departments/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Department> updateDepartment(@PathVariable("id") Long id, @RequestBody Department department) throws DepartmentNotFoundException, EmployeeNotFoundException {
         return new ResponseEntity<Department>(departmentService.updateDepartment(id, department), HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/company/departments/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDepartment(@PathVariable("id") Long id) throws DepartmentNotFoundException {
         departmentService.deleteDepartment(id);
         return new ResponseEntity<String >("Department Deleted Successfully", HttpStatus.OK);

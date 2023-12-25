@@ -6,6 +6,7 @@ import com.github.HusseinHamadi.employee.manegment.system.repository.DepartmentR
 import com.github.HusseinHamadi.employee.manegment.system.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,12 +28,14 @@ public class EmployeeServiceImp implements EmployeeService{
     }
 
     @Override
+    @Transactional
     public Employee saveEmployee(Employee employee) {
 
         return employeeRepository.save(employee);
     }
 
     @Override
+    @Transactional
     public Employee updateEmployee(Long id, Employee employee) throws EmployeeNotFoundException{
         Optional<Employee> empOptional=employeeRepository.findById(id);
         if(empOptional.isPresent()){
@@ -52,7 +55,8 @@ public class EmployeeServiceImp implements EmployeeService{
             if(Objects.nonNull(employee.getSalary())){
                 emp.setSalary(employee.getSalary());
             }
-            return employeeRepository.save(emp);
+
+            return employeeRepository.saves(emp);
         }
         else
             throw new EmployeeNotFoundException("Employee Id doesn't exist");
@@ -83,8 +87,9 @@ public class EmployeeServiceImp implements EmployeeService{
         return employeeRepository.findByDepartmentId(id);
     }
 
+    @Transactional
     @Override
     public List<Employee> getEmployeeBySalary(Double up, Double low) {
-        return employeeRepository.findBySalaryBetween(up,low);
+        return employeeRepository.getBySalaryBetween(up,low);
     }
 }
