@@ -45,9 +45,9 @@ public class Employee {
     private String lastName;
 
 
-    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false, updatable = false)
-    private Date startingDate;
+    private Date startingDate = new Date();
 
 
     @UpdateTimestamp
@@ -89,10 +89,8 @@ public class Employee {
     )
     @JoinColumn(
             name = "department_id",
-            referencedColumnName = "id",
-            nullable = false
+            referencedColumnName = "id"
     )
-    @NotNull
     private Department department;
 
 
@@ -103,21 +101,24 @@ public class Employee {
     }
 
 
-    @ManyToMany(
-            cascade = CascadeType.ALL
-    )
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "employee_project_map",
             joinColumns = @JoinColumn(
                     name = "employee_id",
                     referencedColumnName = "employee_id"
             ),
-
             inverseJoinColumns = @JoinColumn(
                     name = "project_id",
                     referencedColumnName = "id"
             )
     )
-    private List<Project> projects;
+    @JsonIgnoreProperties("projects")  // Add this annotation to break the loop
+    private List<Project> projects = new ArrayList<>();
 
+    @JsonBackReference
+    @JsonIgnore
+    public List<Project> getProjects() {
+        return projects;
+    }
 }

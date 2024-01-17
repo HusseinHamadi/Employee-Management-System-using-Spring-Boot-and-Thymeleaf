@@ -9,12 +9,24 @@
 
 </head>
 <body>
-
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">EMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="employees">Employees</a>
+            <a class="nav-item nav-link" href="departments">Departments</a>
+            <a class="nav-item nav-link" href="projects">Project</a>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
             <form id="departmentIdSearch" th:action="@{/company/departments/getDepartmentById}" method="get">
-                <h3>Search Employee By Id</h3>
+                <h3>Search Department By Id</h3>
                 <div class="form-group">
                     <label for="departmentId">Employee ID:</label>
                     <input type="number" class="form-control" id="departmentId" name="id"
@@ -24,34 +36,13 @@
             </form>
         </div>
 
-        <div class="col-md-6">
-            <form id="employeeDepartmentIdSearch" th:action="@{/company/employees/getEmployeeByDepartmentId}" method="get">
-                <h3>Get All Employees by Department ID</h3>
-                <div class="form-group">
-                    <label for="depId">Department ID:</label>
-                    <input type="number" class="form-control" id="depId" name="depId" placeholder="Enter Department ID"
-                           required>
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-        </div>
 
-        <div class="col-md-6">
-            <form id="employeeSalaries" th:action="@{/company/employees/getEmployeeBySalary}" method="get">
-                <h3>Get Employees with Salaries Between:</h3>
-                <div class="form-group">
-                    <label for="employeeSalaries">Number 1:</label>
-                    <input type="number" class="form-control" id="upper" name="num1" required>
-
-                    <label for="employeeSalaries">Number 2:</label>
-                    <input type="number" class="form-control" id="lower" name="num2" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-        </div>
     </div>
 </div>
 
+<br>
+<br>
+<br>
 
 <div class="container">
     <div class="row">
@@ -80,6 +71,11 @@
             <td th:text="${dep.location}"></td>
             <td th:text="${dep.description}"></td>
             <td th:text="${dep.budget}"></td>
+            <td>
+
+                <a th:href="@{/company/departments/update/{id} (id=${dep.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/company/departments/delete/{id} (id=${dep.id})}" class="btn btn-danger ">Delete</a>
+            </td>
         </tr>
         </tbody>
 

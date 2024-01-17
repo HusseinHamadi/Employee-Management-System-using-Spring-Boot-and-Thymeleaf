@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public interface EmployeeService {
     List<Employee> listOfEmployees();
-    Employee saveEmployee(Employee employee);
-    Employee updateEmployee(Long id, Employee employee) throws EmployeeNotFoundException;
+    void saveEmployee(Employee employee);
+    void updateEmployee(Long id, Employee employee) throws EmployeeNotFoundException;
 
     void deleteEmployee(Long id) throws EmployeeNotFoundException;
     Employee getEmployeeById(Long id) throws EmployeeNotFoundException;

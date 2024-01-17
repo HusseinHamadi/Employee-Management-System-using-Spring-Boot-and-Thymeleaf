@@ -51,7 +51,7 @@ public class Department {
 
 
     @Column(name = "budget")
-    private Long budget;
+    private Double budget;
 
 
 
@@ -80,7 +80,7 @@ public class Department {
     //department has one manager
     @OneToOne(
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "manager_id",

@@ -1,5 +1,6 @@
 package com.github.HusseinHamadi.employee.manegment.system.service;
 
+import com.github.HusseinHamadi.employee.manegment.system.entity.Employee;
 import com.github.HusseinHamadi.employee.manegment.system.entity.Project;
 import com.github.HusseinHamadi.employee.manegment.system.error.ProjectNotFoundException;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,15 @@ public interface ProjectService {
 
     Project getProjectById(Long id) throws ProjectNotFoundException;
 
-    Project createProject(Project project);
-
-    Project updateProject(Long id, Project project) throws ProjectNotFoundException;
+    void updateProject(Long id, Project project) throws ProjectNotFoundException;
 
     void deleteProject(Long id) throws ProjectNotFoundException;
+
+    void saveProject(Project project);
+
+    List<Employee> getEmployeesOfProject(Long id);
+
+    void addEmployeeToProject(Long empId, Long projId);
+
+    void removeEmployee(Long id, Long projId);
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,8 @@ public class DepartmentServiceImp implements DepartmentService{
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private EmployeeService employeeService;
 
     @Override
     public List<Department> listOfDepartments() {
@@ -44,17 +47,36 @@ public class DepartmentServiceImp implements DepartmentService{
     }
 
     @Override
-    public Department createDepartment(Department department) {
+    @Transactional
+    public void createDepartmentWithManager(Department department, Employee manager) {
 
         if(department.getManager()!=null)
             //setting the managers department id to the department associated to him
             department.getManager().setDepartment(department);
-        return departmentRepository.save(department);
+
+//        manager.setDepartment(department);
+//        employeeService.saveEmployee(manager);
+
+        departmentRepository.addDepartmentWithManager(
+                department.getName(),
+                department.getLocation(),
+                department.getDescription(),
+                department.getBudget(),
+                manager.getFirstName(),
+                manager.getLastName(),
+                manager.getAddress(),
+                manager.getPhoneNumber(),
+                manager.getSalary(),
+                manager.getStartingDate()
+        );
     }
 
     @Override
-    public Department updateDepartment(Long id, Department department) throws DepartmentNotFoundException, EmployeeNotFoundException {
+    @Transactional
+    public void updateDepartment(Long id, Department department, Long mgrId, Employee employee) throws DepartmentNotFoundException, EmployeeNotFoundException {
         Optional<Department> depOptional=departmentRepository.findById(id);
+        Employee emp=employeeRepository.findById(mgrId).get();
+
         if(depOptional.isPresent()) {
             Department dep=depOptional.get();
             if (Objects.nonNull(department.getName()) && !"".equalsIgnoreCase(department.getName())) {
@@ -69,40 +91,47 @@ public class DepartmentServiceImp implements DepartmentService{
             if (Objects.nonNull(department.getBudget())) {
                 dep.setBudget(department.getBudget());
             }
-            //if we pass a manager
-            if (Objects.nonNull(department.getManager())) {
-                //check if id is passed
-                Long employeeId=department.getManager().getEmployeeId();
-                if(employeeId>0){
-                    //check if id is present in DB
-                    Optional<Employee> employeeOptional=employeeRepository.findById(department.getManager().getEmployeeId());
-                    if(employeeOptional.isPresent()){
-                        //getting the manager
-                        Employee employee=employeeOptional.get();
-                        //assigning the manager the department
-                        employee.setDepartment(dep);
-                        //assign dep manager to the existing one
-                        dep.setManager(employee);
-                    }
-                    else{
-                        throw new EmployeeNotFoundException("Employee Id doesn't exist");
-                    }
-                }
-                else{
-                    //if id is not passed set manager to department
-                    dep.setManager(department.getManager());
-                    //set managers department to the present department he is managing
-                    department.getManager().setDepartment(dep);
-                }
 
+            if(Objects.nonNull(employee.getAddress()) && !"".equalsIgnoreCase(employee.getAddress())){
+                emp.setAddress(employee.getAddress());
             }
-            return departmentRepository.save(dep);
+            if(Objects.nonNull(employee.getFirstName()) && !"".equalsIgnoreCase(employee.getFirstName())){
+                emp.setFirstName(employee.getFirstName());
+            }
+            if(Objects.nonNull(employee.getLastName()) && !"".equalsIgnoreCase(employee.getLastName())){
+                emp.setLastName(employee.getLastName());
+            }
+            if(Objects.nonNull(employee.getPhoneNumber())){
+                emp.setPhoneNumber(employee.getPhoneNumber());
+            }
+            if(Objects.nonNull(employee.getSalary())){
+                emp.setSalary(employee.getSalary());
+            }
+
+
+            //if we pass a manager
+            departmentRepository.updateDepartment(
+                    dep.getId(),
+                    dep.getName(),
+                    dep.getLocation(),
+                    dep.getDescription(),
+                    dep.getBudget(),
+                    emp.getEmployeeId(),
+                    emp.getFirstName(),
+                    emp.getLastName(),
+                    emp.getAddress(),
+                    emp.getPhoneNumber(),
+                    emp.getSalary()
+
+            );
         }
         else
             throw new DepartmentNotFoundException("Department Id doesn't exist");
     }
 
+
     @Override
+    @Transactional
     public void deleteDepartment(Long id) throws DepartmentNotFoundException{
         Optional<Department> departmentOptional = departmentRepository.findById(id);
 

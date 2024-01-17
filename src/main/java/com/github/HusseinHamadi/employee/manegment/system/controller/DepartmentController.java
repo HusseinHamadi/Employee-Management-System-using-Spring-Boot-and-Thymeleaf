@@ -53,27 +53,40 @@ public class DepartmentController {
     }
 
     @PostMapping("/create")
-    public String createDepartmentWithOrWithoutManager(@ModelAttribute Department department, @ModelAttribute Employee manager) {
-            // Save the manager if manager's name is provided
-            employeeService.saveEmployee(manager);
-            manager.setDepartment(department);
-            department.setManager(manager);
+    public String createDepartmentWithManager(@ModelAttribute Department department, @ModelAttribute Employee manager) {
 
-        departmentService.createDepartment(department);
+//            employeeService.saveEmployee(manager);
+            departmentService.createDepartmentWithManager(department, manager);
+//            manager.setDepartment(department);
+//            department.setManager(manager);
+
+
 
         return "redirect:/company/departments";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Department> updateDepartment(@PathVariable("id") Long id, @RequestBody Department department) throws DepartmentNotFoundException, EmployeeNotFoundException {
-        return new ResponseEntity<Department>(departmentService.updateDepartment(id, department), HttpStatus.OK);
+    @GetMapping("/update/{id}")
+    public String updateDepartmentForm(@PathVariable("id") Long id, Model model) throws DepartmentNotFoundException, EmployeeNotFoundException {
+        Department department= departmentService.getDepartmentById(id);
+
+        Employee manager=department.getManager();
+
+        model.addAttribute("department", department);
+        model.addAttribute("manager", manager);
+        return "departmentUpdate";
+    }
+
+    @PostMapping("/updateDepartment/{depId}/{mgrId}")
+    public String updateDepartment(@PathVariable("depId") Long depId, @ModelAttribute("department") Department department, @PathVariable("mgrId") Long mgrId, @ModelAttribute("manager") Employee manager) throws DepartmentNotFoundException, EmployeeNotFoundException {
+        departmentService.updateDepartment(depId, department, mgrId, manager);
+        return "redirect:/company/departments";
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDepartment(@PathVariable("id") Long id) throws DepartmentNotFoundException {
+    @GetMapping("/delete/{id}")
+    public String deleteDepartment(@PathVariable("id") Long id) throws DepartmentNotFoundException {
         departmentService.deleteDepartment(id);
-        return new ResponseEntity<String >("Department Deleted Successfully", HttpStatus.OK);
+        return "redirect:/company/departments";
     }
 
 

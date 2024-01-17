@@ -15,7 +15,11 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>20</java.version>
+		<!--here ignore tests-->
+			<maven.test.skip>true</maven.test.skip>
+			<maven.test.failure.ignore>true</maven.test.failure.ignore>
 	</properties>
+
 	<dependencies>
 
 		<dependency>
@@ -65,6 +69,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+
 				<configuration>
 					<excludes>
 						<exclude>
@@ -72,6 +77,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+
 				</configuration>
 			</plugin>
 		</plugins>

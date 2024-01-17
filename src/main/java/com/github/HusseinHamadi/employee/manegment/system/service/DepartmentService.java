@@ -17,9 +17,9 @@ public interface DepartmentService {
 
     Department getDepartmentById(Long id) throws DepartmentNotFoundException;
 
-    Department createDepartment(Department department);
+    void createDepartmentWithManager(Department department, Employee manager);
 
-    Department updateDepartment(Long id, Department department) throws DepartmentNotFoundException, EmployeeNotFoundException;
+    void updateDepartment(Long id, Department department, Long mgrId, Employee manager) throws DepartmentNotFoundException, EmployeeNotFoundException;
 
     void deleteDepartment(Long id) throws DepartmentNotFoundException;
 }

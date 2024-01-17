@@ -112,11 +112,6 @@ public class EmployeeController {
     public String deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException{
 
         try {
-            Employee employeeToDelete = employeeService.getEmployeeById(id);
-
-            // Clear the associations between the employee and projects
-            employeeToDelete.getProjects().clear();
-
             // Delete the employee
             employeeService.deleteEmployee(id);
         } catch (EmployeeNotFoundException e) {

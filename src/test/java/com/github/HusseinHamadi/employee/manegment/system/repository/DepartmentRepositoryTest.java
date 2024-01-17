@@ -37,17 +37,17 @@ class DepartmentRepositoryTest {
                         .address("Beirut")
                         .salary(2000.0)
                         .build();
-        Department department=
-                Department.builder()
-                        .name("ME")
-                        .description("Mechanical Engineering")
-                        .location("Beirut")
-                        .manager(hussein)
-                        .budget(30000l)
-                        .build();
-
-        testEntityManager.persist(department);
-        id=department.getId();
+//        Department department=
+//                Department.builder()
+//                        .name("ME")
+//                        .description("Mechanical Engineering")
+//                        .location("Beirut")
+//                        .manager(hussein)
+//                        .budget(30000l)
+//                        .build();
+//
+//        testEntityManager.persist(department);
+//        id=department.getId();
     }
 
     @Test

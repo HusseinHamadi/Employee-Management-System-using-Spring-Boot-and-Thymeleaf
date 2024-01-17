@@ -27,16 +27,26 @@ public class EmployeeServiceImp implements EmployeeService{
         return employeeRepository.findAll();
     }
 
-    @Override
     @Transactional
-    public Employee saveEmployee(Employee employee) {
+    public void saveEmployee(Employee employee) {
+        // Assuming you have the necessary logic for creating a new Employee entity
+        // ...
 
-        return employeeRepository.save(employee);
+        // Call the stored procedure to save the employee
+        employeeRepository.saveEmployeeStoredProcedure(
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getAddress(),
+                employee.getPhoneNumber(),
+                employee.getSalary(),
+                employee.getStartingDate(),
+                employee.getDepartment().getId()
+        );
     }
 
     @Override
     @Transactional
-    public Employee updateEmployee(Long id, Employee employee) throws EmployeeNotFoundException{
+    public void updateEmployee(Long id, Employee employee) throws EmployeeNotFoundException{
         Optional<Employee> empOptional=employeeRepository.findById(id);
         if(empOptional.isPresent()){
             Employee emp = empOptional.get();
@@ -55,16 +65,28 @@ public class EmployeeServiceImp implements EmployeeService{
             if(Objects.nonNull(employee.getSalary())){
                 emp.setSalary(employee.getSalary());
             }
-
-            return employeeRepository.saves(emp);
+            employeeRepository.updateEmployeeStoredProcedure(
+                    emp.getEmployeeId(),
+                    emp.getFirstName(),
+                    emp.getLastName(),
+                    emp.getAddress(),
+                    emp.getPhoneNumber(),
+                    emp.getSalary(),
+                    emp.getStartingDate(),
+                    emp.getDepartment().getId()
+            );
         }
         else
             throw new EmployeeNotFoundException("Employee Id doesn't exist");
     }
 
     @Override
+    @Transactional
     public void deleteEmployee(Long id) throws EmployeeNotFoundException{
-        if(employeeRepository.findById(id).isPresent()){
+        Optional<Employee> employeeToDelete = employeeRepository.findById(id);
+
+        if(employeeToDelete.isPresent()){
+            employeeToDelete.get().getProjects().clear();
             employeeRepository.deleteById(id);
             }
         else
@@ -83,6 +105,7 @@ public class EmployeeServiceImp implements EmployeeService{
 
 
     @Override
+    @Transactional
     public List<Employee> getEmployeeByDepartmentId(Long id) {
         return employeeRepository.findByDepartmentId(id);
     }
