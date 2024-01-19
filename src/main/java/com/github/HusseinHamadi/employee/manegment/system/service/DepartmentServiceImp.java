@@ -133,16 +133,9 @@ public class DepartmentServiceImp implements DepartmentService{
     @Override
     @Transactional
     public void deleteDepartment(Long id) throws DepartmentNotFoundException{
-        Optional<Department> departmentOptional = departmentRepository.findById(id);
 
-        if(departmentOptional.isPresent()){
-            Department department = departmentOptional.get();
+            departmentRepository.deleteDepartmentById(id);
 
-            departmentRepository.deleteById(id);
 
-        }
-        else{
-            throw new DepartmentNotFoundException("Department Id doesn't exist");
-        }
     }
 }

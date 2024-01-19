@@ -23,49 +23,10 @@
         </div>
     </div>
 </nav>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <form id="employeeIdSearch" th:action="@{/company/employees/getEmployeeById}" method="get">
-                <h3>Search Employee By Id</h3>
-                <div class="form-group">
-                    <label for="employeeId">Employee ID:</label>
-                    <input type="number" class="form-control" id="employeeId" name="employeeId"
-                           placeholder="Enter Employee ID" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-        </div>
 
-
-        <div class="col-md-6">
-            <form id="employeeDepartmentIdSearch" th:action="@{/company/employees/getEmployeeByDepartmentId}" method="get">
-                <h3>Get All Employees by Department ID</h3>
-                <div class="form-group">
-                    <label for="depId">Department ID:</label>
-                    <input type="number" class="form-control" id="depId" name="depId" placeholder="Enter Department ID"
-                           required>
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-        </div>
-
-        <div class="col-md-6">
-            <form id="employeeSalaries" th:action="@{/company/employees/getEmployeeBySalary}" method="get">
-                <h3>Get Employees with Salaries Between:</h3>
-                <div class="form-group">
-                    <label for="employeeSalaries">Number 1:</label>
-                    <input type="number" class="form-control" id="upper" name="num1" required>
-
-                    <label for="employeeSalaries">Number 2:</label>
-                    <input type="number" class="form-control" id="lower" name="num2" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-        </div>
-    </div>
-</div>
-
+<br>
+<br>
+<br>
 
 <div class="container">
     <div class="row">

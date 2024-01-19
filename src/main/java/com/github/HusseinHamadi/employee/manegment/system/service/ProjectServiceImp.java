@@ -80,6 +80,7 @@ public class ProjectServiceImp implements ProjectService{
             if (Objects.nonNull(project.getCost())) {
                 proj.setCost(project.getCost());
             }
+            proj.setDepartment(project.getDepartment());
             projectRepository.updateProject(
                     proj.getId(),
                     proj.getName(),

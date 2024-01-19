@@ -16,12 +16,15 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 
 
-    @Procedure(name="GetAllEmployees")
+
+    @Modifying
+    @Query(value = "CALL GetAllEmployees()", nativeQuery = true)
     List<Employee> findAll();
 
 
-    @Procedure(procedureName = "GetEmployeesOfDepartment")
-    List<Employee> findByDepartmentId(Long id);
+    @Modifying
+    @Query(value = "CALL GetEmployeesOfDepartment(:inDepartmentId)", nativeQuery = true)
+    List<Employee> findByDepartmentId(@Param("inDepartmentId") Long id);
 
 
 
@@ -68,8 +71,12 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
             @Param("id") Long id
     );
 
-    @Procedure(procedureName = "getBySalaryBetween")
-    List <Employee> getBySalaryBetween(Double upper, Double lower);
+    @Modifying
+    @Query(value = "CALL getBySalaryBetween(:inUpper, :inLower)", nativeQuery=true)
+    List <Employee> getBySalaryBetween(
+            @Param("inUpper") Double upper,
+            @Param("inLower") Double lower
+    );
 
     @Modifying
     @Query(value = "Call getEmployeesOfProject(:id)", nativeQuery = true)

@@ -12,6 +12,8 @@ import java.util.Date;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department,Long> {
 
+
+
     @Modifying
     @Query(value = "CALL addDepartmentWithManager(:inName, :inLocation, :inDescription, :inBudget, :inFirstName, :inLastName, :inAddress, :inPhoneNumber, :inSalary, :inStartDate)", nativeQuery = true)
     void addDepartmentWithManager(

@@ -65,6 +65,7 @@ public class EmployeeServiceImp implements EmployeeService{
             if(Objects.nonNull(employee.getSalary())){
                 emp.setSalary(employee.getSalary());
             }
+            emp.setDepartment(employee.getDepartment());
             employeeRepository.updateEmployeeStoredProcedure(
                     emp.getEmployeeId(),
                     emp.getFirstName(),

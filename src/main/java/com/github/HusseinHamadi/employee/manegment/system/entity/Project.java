@@ -36,12 +36,12 @@ public class Project {
     private String description;
 
     @CreationTimestamp
-    private Date startDate = new Date();
+    private Date startDate;
 
     private Double cost;
 
     @UpdateTimestamp
-    @Column(name = "update_date", nullable = false)
+    @Column(name = "update_date")
     private Date updateDate;
 
     // Many projects belong to a department
